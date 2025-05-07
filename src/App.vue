@@ -2,7 +2,7 @@
   <div class="app">
     <h1>To-Do List</h1>
 
-    <!-- Form untuk menambahkan kegiatan baru -->
+    <!-- Form Tambah Kegiatan -->
     <form @submit.prevent="addTodo">
       <input
         v-model="newTodo"
@@ -12,10 +12,11 @@
       <button type="submit">Tambah</button>
     </form>
 
-    <!-- Menampilkan daftar kegiatan -->
+    <!-- Daftar Kegiatan -->
     <ul v-if="todos.length">
       <li v-for="(todo, index) in todos" :key="index">
         {{ todo }}
+        <button class="delete-btn" @click="removeTodo(index)">Batal</button>
       </li>
     </ul>
     <p v-else>Belum ada kegiatan.</p>
@@ -25,7 +26,7 @@
 <script setup>
 import { ref } from 'vue'
 
-// Data kegiatan (bisa diedit sesuai kebutuhan)
+// Data kegiatan awal
 const todos = ref([
   'Belajar VueJS',
   'Mengerjakan tugas UTS',
@@ -35,13 +36,18 @@ const todos = ref([
 // Input kegiatan baru
 const newTodo = ref('')
 
-// Fungsi untuk menambahkan kegiatan ke list
+// Tambahkan kegiatan
 function addTodo() {
   const trimmed = newTodo.value.trim()
   if (trimmed !== '') {
     todos.value.push(trimmed)
     newTodo.value = ''
   }
+}
+
+// Hapus kegiatan berdasarkan index
+function removeTodo(index) {
+  todos.value.splice(index, 1)
 }
 </script>
 
@@ -64,7 +70,7 @@ input {
   border-radius: 5px;
 }
 button {
-  padding: 8px 16px;
+  padding: 8px 14px;
   border: none;
   background-color: #42b983;
   color: white;
@@ -85,5 +91,14 @@ li {
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.delete-btn {
+  background-color: #e74c3c;
+}
+.delete-btn:hover {
+  background-color: #c0392b;
 }
 </style>
