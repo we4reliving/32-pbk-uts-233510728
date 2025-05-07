@@ -12,29 +12,30 @@
       <button type="submit">Tambah</button>
     </form>
 
+    <!-- Tombol Filter -->
+    <div class="filter">
+      <label>
+        <input type="checkbox" v-model="showOnlyIncomplete" />
+        Tampilkan hanya yang belum selesai
+      </label>
+    </div>
+
     <!-- Daftar Kegiatan -->
-    <ul v-if="todos.length">
-      <li
-        v-for="(todo, index) in todos"
-        :key="index"
-        :class="{ done: todo.completed }"
-      >
+    <ul v-if="filteredTodos.length">
+      <li v-for="(todo, index) in filteredTodos" :key="index">
         <label>
-          <input
-            type="checkbox"
-            v-model="todo.completed"
-          />
+          <input type="checkbox" v-model="todo.completed" />
           {{ todo.text }}
         </label>
         <button class="delete-btn" @click="removeTodo(index)">Batal</button>
       </li>
     </ul>
-    <p v-else>Belum ada kegiatan.</p>
+    <p v-else>Tidak ada kegiatan yang ditampilkan.</p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 // Data kegiatan awal
 const todos = ref([
@@ -44,8 +45,9 @@ const todos = ref([
 ])
 
 const newTodo = ref('')
+const showOnlyIncomplete = ref(false)
 
-// Tambahkan kegiatan baru
+// Tambah kegiatan
 function addTodo() {
   const trimmed = newTodo.value.trim()
   if (trimmed !== '') {
@@ -58,6 +60,13 @@ function addTodo() {
 function removeTodo(index) {
   todos.value.splice(index, 1)
 }
+
+// Filter kegiatan berdasarkan checkbox
+const filteredTodos = computed(() => {
+  return showOnlyIncomplete.value
+    ? todos.value.filter(todo => !todo.completed)
+    : todos.value
+})
 </script>
 
 <style scoped>
@@ -107,10 +116,6 @@ li {
   justify-content: space-between;
   align-items: center;
 }
-li.done label {
-  text-decoration: line-through;
-  color: #888;
-}
 label {
   flex: 1;
   cursor: pointer;
@@ -120,5 +125,9 @@ label {
 }
 .delete-btn:hover {
   background-color: #c0392b;
+}
+.filter {
+  margin-top: 15px;
+  text-align: left;
 }
 </style>
