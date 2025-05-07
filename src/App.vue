@@ -15,7 +15,13 @@
     <!-- Daftar Kegiatan -->
     <ul v-if="todos.length">
       <li v-for="(todo, index) in todos" :key="index">
-        {{ todo }}
+        <label>
+          <input
+            type="checkbox"
+            v-model="todo.completed"
+          />
+          {{ todo.text }}
+        </label>
         <button class="delete-btn" @click="removeTodo(index)">Batal</button>
       </li>
     </ul>
@@ -28,24 +34,23 @@ import { ref } from 'vue'
 
 // Data kegiatan awal
 const todos = ref([
-  'Belajar VueJS',
-  'Mengerjakan tugas UTS',
-  'Makan siang'
+  { text: 'Belajar VueJS', completed: false },
+  { text: 'Mengerjakan tugas UTS', completed: false },
+  { text: 'Makan siang', completed: false }
 ])
 
-// Input kegiatan baru
 const newTodo = ref('')
 
 // Tambahkan kegiatan
 function addTodo() {
   const trimmed = newTodo.value.trim()
   if (trimmed !== '') {
-    todos.value.push(trimmed)
+    todos.value.push({ text: trimmed, completed: false })
     newTodo.value = ''
   }
 }
 
-// Hapus kegiatan berdasarkan index
+// Hapus kegiatan
 function removeTodo(index) {
   todos.value.splice(index, 1)
 }
@@ -62,13 +67,15 @@ function removeTodo(index) {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-input {
+
+input[type="text"] {
   padding: 8px;
   width: 65%;
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
 button {
   padding: 8px 14px;
   border: none;
@@ -80,6 +87,7 @@ button {
 button:hover {
   background-color: #369f75;
 }
+
 ul {
   list-style: none;
   padding: 0;
@@ -94,6 +102,10 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+label {
+  flex: 1;
+  cursor: pointer;
 }
 .delete-btn {
   background-color: #e74c3c;
