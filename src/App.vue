@@ -1,12 +1,12 @@
 <template>
   <div class="app">
-    <h1>To-Do List</h1>
+    <h1>📝 To-Do List</h1>
 
     <!-- Form Tambah Kegiatan -->
-    <form @submit.prevent="addTodo">
+    <form @submit.prevent="addTodo" class="todo-form">
       <input
         v-model="newTodo"
-        placeholder="Tambahkan kegiatan baru"
+        placeholder="Tambahkan kegiatan baru..."
         required
       />
       <button type="submit">Tambah</button>
@@ -21,16 +21,16 @@
     </div>
 
     <!-- Daftar Kegiatan -->
-    <ul v-if="filteredTodos.length">
-      <li v-for="(todo, index) in filteredTodos" :key="index">
+    <ul v-if="filteredTodos.length" class="todo-list">
+      <li v-for="(todo, index) in filteredTodos" :key="index" class="todo-item">
         <label>
           <input type="checkbox" v-model="todo.completed" />
-          {{ todo.text }}
+          <span>{{ todo.text }}</span>
         </label>
-        <button class="delete-btn" @click="removeTodo(index)">Batal</button>
+        <button class="delete-btn" @click="removeTodo(index)">🗑</button>
       </li>
     </ul>
-    <p v-else>Tidak ada kegiatan yang ditampilkan.</p>
+    <p v-else class="empty">Tidak ada kegiatan yang ditampilkan.</p>
   </div>
 </template>
 
@@ -70,64 +70,116 @@ const filteredTodos = computed(() => {
 </script>
 
 <style scoped>
+/* Global */
+body {
+  background-color: #f0f4f8;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* App Container */
 .app {
-  max-width: 500px;
+  max-width: 600px;
   margin: 50px auto;
-  padding: 20px;
-  font-family: sans-serif;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-input[type="text"] {
-  padding: 8px;
-  width: 65%;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+/* Judul */
+h1 {
+  margin-bottom: 24px;
+  color: #2c3e50;
 }
 
-button {
-  padding: 8px 14px;
-  border: none;
+/* Form */
+.todo-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.todo-form input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #dcdfe3;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.todo-form button {
+  padding: 12px 20px;
   background-color: #42b983;
   color: white;
-  border-radius: 5px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-button:hover {
+.todo-form button:hover {
   background-color: #369f75;
 }
 
-ul {
+/* Filter */
+.filter {
+  text-align: left;
+  margin-bottom: 15px;
+  color: #34495e;
+  font-size: 14px;
+}
+.filter input {
+  margin-right: 8px;
+}
+
+/* Todo List */
+.todo-list {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
-  text-align: left;
 }
-li {
-  background: #f9f9f9;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 5px;
+.todo-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
 }
-label {
-  flex: 1;
+.todo-item:hover {
+  background: #eef1f4;
+}
+.todo-item label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   cursor: pointer;
 }
+.todo-item input[type="checkbox"] {
+  transform: scale(1.2);
+}
+.todo-item span {
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+/* Delete Button */
 .delete-btn {
-  background-color: #e74c3c;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #e74c3c;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 .delete-btn:hover {
-  background-color: #c0392b;
+  transform: scale(1.2);
 }
-.filter {
-  margin-top: 15px;
-  text-align: left;
+
+/* Empty Text */
+.empty {
+  font-style: italic;
+  color: #888;
+  margin-top: 20px;
 }
 </style>
