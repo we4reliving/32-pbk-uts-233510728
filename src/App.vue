@@ -14,7 +14,11 @@
 
     <!-- Daftar Kegiatan -->
     <ul v-if="todos.length">
-      <li v-for="(todo, index) in todos" :key="index">
+      <li
+        v-for="(todo, index) in todos"
+        :key="index"
+        :class="{ done: todo.completed }"
+      >
         <label>
           <input
             type="checkbox"
@@ -35,13 +39,13 @@ import { ref } from 'vue'
 // Data kegiatan awal
 const todos = ref([
   { text: 'Belajar VueJS', completed: false },
-  { text: 'Mengerjakan tugas UTS', completed: false },
+  { text: 'Mengerjakan tugas UTS', completed: true },
   { text: 'Makan siang', completed: false }
 ])
 
 const newTodo = ref('')
 
-// Tambahkan kegiatan
+// Tambahkan kegiatan baru
 function addTodo() {
   const trimmed = newTodo.value.trim()
   if (trimmed !== '') {
@@ -102,6 +106,10 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+li.done label {
+  text-decoration: line-through;
+  color: #888;
 }
 label {
   flex: 1;
