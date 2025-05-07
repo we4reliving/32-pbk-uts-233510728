@@ -2,10 +2,17 @@
   <div class="app">
     <h1>To-Do List</h1>
 
+    <!-- Form untuk menambahkan kegiatan baru -->
     <form @submit.prevent="addTodo">
-      <input v-model="newTodo" placeholder="Tambahkan kegiatan baru" />
+      <input
+        v-model="newTodo"
+        placeholder="Tambahkan kegiatan baru"
+        required
+      />
+      <button type="submit">Tambah</button>
     </form>
 
+    <!-- Menampilkan daftar kegiatan -->
     <ul v-if="todos.length">
       <li v-for="(todo, index) in todos" :key="index">
         {{ todo }}
@@ -18,17 +25,21 @@
 <script setup>
 import { ref } from 'vue'
 
+// Data kegiatan (bisa diedit sesuai kebutuhan)
 const todos = ref([
   'Belajar VueJS',
   'Mengerjakan tugas UTS',
   'Makan siang'
 ])
 
+// Input kegiatan baru
 const newTodo = ref('')
 
+// Fungsi untuk menambahkan kegiatan ke list
 function addTodo() {
-  if (newTodo.value.trim() !== '') {
-    todos.value.push(newTodo.value.trim())
+  const trimmed = newTodo.value.trim()
+  if (trimmed !== '') {
+    todos.value.push(trimmed)
     newTodo.value = ''
   }
 }
@@ -47,13 +58,13 @@ function addTodo() {
 }
 input {
   padding: 8px;
-  width: 70%;
-  margin-right: 5px;
+  width: 65%;
+  margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 button {
-  padding: 8px 12px;
+  padding: 8px 16px;
   border: none;
   background-color: #42b983;
   color: white;
@@ -70,7 +81,7 @@ ul {
   text-align: left;
 }
 li {
-  background: #f5f5f5;
+  background: #f9f9f9;
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 5px;
